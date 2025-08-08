@@ -177,10 +177,18 @@ export const sendTransaction = async (
       success: true
     };
   } catch (error) {
+    let errorMessage = 'Unknown error';
+    
+    if (error && typeof error === 'object' && 'message' in error) {
+      errorMessage = String((error as any).message);
+    } else if (error instanceof Error) {
+      errorMessage = error.message;
+    }
+    
     return {
       hash: '',
       success: false,
-      error: error instanceof Error ? error.message : 'Unknown error'
+      error: errorMessage
     };
   }
 };
